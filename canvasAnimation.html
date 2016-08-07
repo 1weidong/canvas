@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas动画</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #eee;
+        }
+        #outer{
+            width: 500px;
+            margin: 40px auto 0;
+        }
+        #canvas{
+            background-color: white;
+            border: 5px solid blue;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <p>蒙德里安风格的艺术画</p>
+        <canvas id="canvas" width="400" height="400" onclick="create_image()">
+            你的浏览器不支持canvas
+        </canvas>
+        <form>
+            水平线
+            <select id="h_border_count" name="h_border_count">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2" selected="selected">2</option>
+                <option value="3">3</option>
+            </select>
+            </br>
+            垂直线
+            <select id="v_border_count" name="v_border_count">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2" selected="selected">2</option>
+                <option value="3">3</option>
+            </select>
+        </form>
+    </div>
+    <script>
+        //蒙德里安风格的艺术画
+        var mycanvas=document.getElementById("canvas");
+        var cntxt = mycanvas.getContext('2d');
+
+        function create_image(){
+            mycanvas.width=mycanvas.width; //clears canvas
+            cntxt.strokeStyle="rgb(0,0,0)";
+            var h=document.getElementById("h_border_count").value;
+            var v=document.getElementById("v_border_count").value;
+            cntxt.lineWidth="2";
+            h_line=500;
+            h_line_1=0;
+            h_line_2=0;
+            h_line_3=0;
+            v_line_1=0;
+            v_line_2=0;
+            v_line_3=0;
+            for(var i=1;i<=h;i++){
+                cntxt.beginPath();
+                rand_linestart=(Math.floor(Math.random()*500));
+                rand_linewidth=(Math.floor(Math.random()*20));  //随机取线段的宽度
+                if(rand_linestart<h_line){
+                    h_line=rand_linestart-(rand_linewidth/2);
+                    console.log( "h_line的值是"+h_line)
+                }
+                if(i==1){
+                    h_line_1=rand_linestart+(rand_linewidth/2);
+                }
+                if(i==2){
+                    h_line_2=rand_linestart+(rand_linewidth/2);
+                }
+                if(i==3){
+                    h_line_3=rand_linestart+(rand_linewidth/2);
+                }
+                cntxt.lineWidth=rand_linewidth;
+                cntxt.moveTo(0,rand_linestart);    //水平方向画线
+                cntxt.lineTo(500,rand_linestart);
+                cntxt.closePath();
+                cntxt.stroke();
+            }
+            v_line=500;
+            for(var i=1;i<=v;i++){
+                cntxt.beginPath();
+                rand_linestart=(Math.floor(Math.random()*500));
+                rand_linewidth=(Math.floor(Math.random()*20));
+                if(rand_linestart<v_line){
+                    v_line=rand_linestart-(rand_linewidth/2);
+                    console.log( "v_line的值是"+v_line)
+                }
+                if(i==1){
+                    v_line_1=rand_linestart+(rand_linewidth/2);
+                }
+                if(i==2){
+                    v_line_2=rand_linestart+(rand_linewidth/2);
+                }
+                if(i==3){
+                    v_line_3=rand_linestart+(rand_linewidth/2);
+                }
+                cntxt.lineWidth=rand_linewidth;
+                cntxt.moveTo(rand_linestart,0);      //垂直方向划线
+                cntxt.lineTo(rand_linestart,500);
+                cntxt.closePath();
+                cntxt.stroke();
+            }
+            //填充方块
+            cntxt.fillStyle="rgb(255,255,0)";
+            cntxt.fillRect(0,0,v_line,h_line);            //让红色的方块在左上角
+            v_max=Math.max(v_line_1,v_line_2,v_line_3);   //Math.max() 数组中最大的值
+            h_max=Math.max(h_line_1,h_line_2,h_line_3);   //v_max和h_max的取值是来确定方块的位置
+            cntxt.fillStyle="rgb(255,0,0)";
+            cntxt.fillRect(v_max,h_max,500,500);           //让黄色的方块在右上角
+        }//function
+
+        //创建的渐变动画
+        /*var z=10;
+        var direction = 1;
+        var mycanvas = document.getElementById("canvas");
+        var cntxt = mycanvas.getContext('2d');
+        var mygradient= cntxt.createRadialGradient(200,200,10,300,300,300);
+
+        function gradient(){
+            if(z==0){
+                direction=1;
+            }
+            if(z==300){
+                direction=0;
+            }
+            if(direction==1){
+                z=(z+10);
+            }
+            if(direction==0){
+                z=(z-10);
+            }
+            mygradient=cntxt.createRadialGradient(200,200,10,300,z,300);
+            mygradient.addColorStop("0","#000");
+            mygradient.addColorStop("1.0","#0f0");
+            cntxt.fillStyle=mygradient;
+            cntxt.fillRect(0,0,400,400);
+        }
+        setInterval(gradient, 100);*/
+    </script>
+</body>
+</html>
